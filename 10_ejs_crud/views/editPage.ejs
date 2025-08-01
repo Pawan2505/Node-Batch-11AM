@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+</head>
+<body>
+    
+    <form method="post" action="/updatePerson/<%= pId %>">
+        <label>Username</label>
+        <input type="text" name="username" value="<%= person.username %>">
+        <label>Age</label>
+        <input type="number" name="age" value="<%= person.age %>">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
