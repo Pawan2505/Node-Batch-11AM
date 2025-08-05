@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+  </head>
+  <body>
+    <form action="/updateDetails/<%= user.id %>" method="POST">
+      <table border="1">
+        <tr>
+          <td>Name</td>
+          <td><input type="text" name="name" value="<%= user.name %>" required /></td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td><input type="email" name="email" value="<%= user.email %>" required /></td>
+        </tr>
+        <tr>
+          <td>Phone</td>
+          <td><input type="number" name="phone" value="<%= user.phone %>" required /></td>
+        </tr>
+        <tr>
+          <td>Gender</td>
+          <td>
+                <input type="radio" <% if(user.gender == "male"){%> checked <% } %> value="male" name="gender">Male
+                <input type="radio" <% if(user.gender == "female"){%> checked <% } %>  value="female" name="gender">Female
+          </td>
+        </tr>
+        <tr>
+          <td>Hobby</td>
+          <td>
+             <input type="checkbox" <% if(user.hobby.includes("running")){%> checked <% } %>  value="running" name="hobby">Running
+                <input type="checkbox"  <% if(user.hobby.includes("coding")){%> checked <% } %>  value="coding" name="hobby">Coding          
+                <input type="checkbox"  <% if(user.hobby.includes("gaming")){%> checked <% } %>  value="gaming" name="hobby">Gaming
+          </td>
+        </tr>
+        <tr>
+          <td>Password</td>
+          <td><input type="password" name="password" value="<%= user.password %>" required /></td>
+        </tr>
+        <tr>
+          <td>City</td>
+          <td>
+            <select name="city">
+                <option value="">--select option--</option>
+              <%  let cities = ["Lucknow","Delhi","Kota","Ahemdabad","Amreli"]; %>
+
+                   <% cities.map((city)=>{ %>
+                        <option <% if(user.city == city){ %> selected  <%}%> value="<%= city %>"><%= city %></option>
+                   <% }) %>
+
+               </select>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><button type="submit">Submit</button></td>
+        </tr>
+      </table>
+    </form>
+
+
+
+  </body>
+</html>

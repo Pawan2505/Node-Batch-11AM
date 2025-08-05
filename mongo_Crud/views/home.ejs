@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+  </head>
+  <body>
+    <form action="/addDetails" method="POST">
+      <table border="1">
+        <tr>
+          <td>Name</td>
+          <td><input type="text" name="name" required /></td>
+        </tr>
+        <tr>
+          <td>Email</td>
+          <td><input type="email" name="email" required /></td>
+        </tr>
+        <tr>
+          <td>Phone</td>
+          <td><input type="number" name="phone" required /></td>
+        </tr>
+        <tr>
+          <td>Gender</td>
+          <td>
+            <input type="radio" name="gender" value="male" required />Male
+            <input type="radio" name="gender" value="female" />Female
+          </td>
+        </tr>
+        <tr>
+          <td>Hobby</td>
+          <td>
+            <input type="checkbox" value="running" name="hobby">Running
+            <input type="checkbox" value="coding" name="hobby">Coding          
+            <input type="checkbox" value="gaming" name="hobby">Gaming
+          </td>
+        </tr>
+        <tr>
+          <td>Password</td>
+          <td><input type="password" name="password" required /></td>
+        </tr>
+        <tr>
+          <td>City</td>
+          <td>
+            <select name="city">
+              <% let cities = ['Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Kolkata']; %>
+              <% cities.forEach((city) => { %>
+                <option value="<%= city %>"><%= city %></option>
+              <% }) %>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><button type="submit">Submit</button></td>
+        </tr>
+      </table>
+    </form>
+    <br /><br /><br />
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Gender</th>
+          <th>Hobby</th>
+          <th>Password</th>
+          <th>City</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% record.forEach((user) => { %>
+          <tr>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= user.phone %></td>
+            <td><%= user.gender %></td>
+            <td><%= user.hobby %></td>
+            <td><%= user.password %></td>
+            <td><%= user.city %></td>
+            <td>
+              <a href="/editDetails/<%= user.id %>"><button type="button">Edit</button></a>
+              <a href="/deleteDetails/<%= user.id %>"><button type="button">Delete</button></a>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </body>
+</html>
