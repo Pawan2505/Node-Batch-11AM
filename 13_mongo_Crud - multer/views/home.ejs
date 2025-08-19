@@ -50,10 +50,12 @@
             </select>
           </td>
         </tr>
-        <tr>
-          <td>Image</td>
-          <td><input type="file" name="image"></td>
-        </tr>
+      <tr>
+        <td>Image</td>
+        <td>
+          <input type="file" name="image">
+        </td>
+      </tr>
         <tr>
           <td></td>
           <td><button type="submit">Submit</button></td>
@@ -86,7 +88,9 @@
             <td><%= user.hobby %></td>
             <td><%= user.password %></td>
             <td><%= user.city %></td>
-            <td><img src="/<%= user.image%>" alt="" width="50" height="50"></td>
+           <td>
+            <img src="/<%=user.image%>" alt="" width="80" height="80">
+           </td>
             <td>
               <a href="/editDetails/<%= user.id %>"><button type="button">Edit</button></a>
               <a href="/deleteDetails/<%= user.id %>"><button type="button">Delete</button></a>

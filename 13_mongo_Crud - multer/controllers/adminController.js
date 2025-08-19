@@ -14,8 +14,9 @@ module.exports.home = async (req, res) => {
 module.exports.addAdmin = async (req, res) => {
     try{
         const { name, email, phone, gender, hobby, password, city } = req.body;
-        
+        console.log(req.file);
         const image = req.file?req.file.path:"";
+       
         await Admin.create({
             name,   
             email,
@@ -25,6 +26,7 @@ module.exports.addAdmin = async (req, res) => {
             password,
             city,
             image
+        
         });
         console.log("Record added successfully.");
         res.redirect("/");
@@ -56,9 +58,11 @@ module.exports.updateAdmin = async (req, res) => {
     try{
         const id = req.params.id;
         const { name, email, phone, gender, hobby, password, city } = req.body;
-       const recordUpdate = await Admin.findById(id);
-        if(req.file && recordUpdate.image){
-            fs.unlinkSync(recordUpdate.image); // delete old image
+    
+        const userUpdate = await Admin.findById(id);
+
+        if(req.file && userUpdate.image){
+            fs.unlinkSync(userUpdate.image)
         }
         
         const user = await Admin.findByIdAndUpdate(id, {

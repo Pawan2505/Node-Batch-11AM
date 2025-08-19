@@ -33,6 +33,7 @@ const adminTbl = mongoose.Schema({
         type:String,
         required:true,
     }
+
 })
 
 const admin = mongoose.model('admin',adminTbl);
