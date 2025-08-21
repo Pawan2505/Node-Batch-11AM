@@ -5,8 +5,8 @@ const routes = express.Router();
 
 routes.get('/', Student.getAllStudent);
 routes.post('/addStudent', Student.addStudent);
-routes.put('/updateStudent:id',Student.updateStudent);
-routes.delete('/deleteStudent',Student.deleteStudent);
+routes.put('/updateStudent/:id',Student.updateStudent);
+routes.delete('/deleteStudent/:id',Student.deleteStudent);
 
 
 module.exports = routes;
