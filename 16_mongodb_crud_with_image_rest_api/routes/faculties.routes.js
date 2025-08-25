@@ -1,12 +1,12 @@
 const express = require('express');
-const router = express.Router();
-const Faculty = require("../models/faculty.model");
-const { getAllFaculties, addFaculty, updateFaculty, deleteFaculty } = require('../controllers/faculty.controller');
+const Faculty = require('../controllers/faculty.controller')
+const FacultyModel = require('../models/faculty.model')
 
-// Routes
-router.get("/allfaculties", getAllFaculties);
-router.post("/addfaculty", Faculty.uploadImage, addFaculty);
-router.put("/updatefaculty/:id", Faculty.uploadImage, updateFaculty);
-router.delete("/deletefaculty/:id", deleteFaculty);
+const router = express.Router();
+
+router.get('/getAllFaculty', Faculty.allfaculty);
+router.post('/addFaculty',FacultyModel.uploadImage, Faculty.addFaculty)
+router.put('/updateFaculty/:id',FacultyModel.uploadImage,Faculty.updateFaculty)
+router.delete('/deleteFaculty/:id', Faculty.deleteFaculty)
 
 module.exports = router;

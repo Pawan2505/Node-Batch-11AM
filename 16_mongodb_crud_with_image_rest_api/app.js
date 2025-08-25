@@ -9,8 +9,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use('/', require('./routes/student.routes'));
-
 app.use('/faculty', require('./routes/faculties.routes'));
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

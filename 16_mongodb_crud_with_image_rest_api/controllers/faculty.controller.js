@@ -1,71 +1,112 @@
 const Faculty = require("../models/faculty.model");
+const path = require("path");
+const fs = require("fs");
 
+module.exports.allfaculty = async (req, res) => {
+  try {
+    console.log("List of faculty!!");
 
-module.exports.getAllFaculties = async (req, res) => {
-    try{
-        const faculties = await Faculty.find();
-       return res.status(200).json({ message: "Faculties fetched successfully", data: faculties });
-    }catch(error){
-        console.error("Error fetching faculties:", error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
-}
+    const allFaculty = await Faculty.find({});
+
+    return res.status(200).json({ message: "All Faculty!!", data: allFaculty });
+  } catch (err) {
+    return res
+      .status(200)
+      .json({ message: "Internal server error!!", data: error });
+  }
+};
 
 module.exports.addFaculty = async (req, res) => {
-    try {
-        const facultyData = req.body;
+  try {
+    // console.log(req.body)
+    // console.log(req.file)
+    const facultyData = req.body;
 
-        // Agar image bheja hai to uska filename save karo
-        if (req.file) {
-            facultyData.image = req.file.filename;
-        }
-
-        const newFaculty = await Faculty.create(facultyData);
-        return res.status(201).json({ message: "Faculty added successfully", data: newFaculty });
-    } catch (error) {
-        console.error("Error adding faculty:", error);
-        return res.status(500).json({ message: "Internal server error" });
+    // Agar image bheja hai to uska filename save karo
+    if (req.file) {
+      facultyData.image = Faculty.imagePath + "/" + req.file.filename;
     }
+    const newFaculty = await Faculty.create(facultyData);
+    return res
+      .status(200)
+      .json({ message: "New Faculty Added!!", data: newFaculty });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(200)
+      .json({ message: "Not added new Faculty!!", data: error });
+  }
 };
 
 module.exports.updateFaculty = async (req, res) => {
-    try {
-        const id = req.params.id;
-        const updateData = req.body;
+  try {
+    console.log("updated faculty controller!!");
+    const id = req.params.id;
 
-        // Agar naya image bheja hai to uska filename update karo
-        if (req.file) {
-            updateData.image = req.file.filename;
-        }
-
-        // Har update ke time updated_date ko current time pe set karo
-        updateData.updated_date = Date.now();
-
-        const updatedFaculty = await Faculty.findByIdAndUpdate(id, updateData, { new: true });
-        if (!updatedFaculty) {
-            return res.status(404).json({ message: "Faculty not found" });
-        }
-        return res.status(200).json({ message: "Faculty updated successfully", data: updatedFaculty });
-    } catch (error) {
-        console.error("Error updating faculty:", error);
-        return res.status(500).json({ message: "Internal server error" });
+    // Find existing faculty
+    const faculty = await Faculty.findById(id);
+    if (!faculty) {
+      return res.status(404).json({ message: "Faculty not found" });
     }
+
+    let updateData = req.body;
+
+    // If new image uploaded
+    if (req.file) {
+      // delete old image (if exists)
+      if (faculty.image) {
+        const oldPath = path.join(__dirname, "..", faculty.image);
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+
+      // save new image
+      updateData.image = Faculty.imagePath + "/" + req.file.filename;
+    }
+
+    // update faculty
+    const updatedFaculty = await Faculty.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+
+    return res.status(200).json({
+      message: "Faculty updated successfully",
+      data: updatedFaculty,
+    });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(400)
+      .json({ message: "Faculty not updated", data: error.message });
+  }
 };
 
 
 
-
-module.exports.deleteFaculty = async (req, res) => {
+module.exports.deleteFaculty = async(req,res)=>{
     try{
+      console.log("delete routes");
 
         const id = req.params.id;
-        const deletedFaculty = await Faculty.findByIdAndDelete(id);
-        if (!deletedFaculty) {
-            return res.status(404).json({ message: "Faculty not found" });
+
+        const deleteFacult = await Faculty.findByIdAndDelete(id);
+
+        if(deleteFacult.image){
+            const oldPath = path.join(__dirname,deleteFacult.image)
+
+            if(fs.existsSync(oldPath)){
+                fs.unlinkSync(oldPath);
+            }
         }
-        return res.status(200).json({ message: "Faculty deleted successfully", data: deletedFaculty });
+
+        return res.status(200).json({"message":"Faculty Deleted Successfully!!",data:deleteFacult});
+
     }catch(error){
-        console.error("Error deleting faculty:", error);
-        return res.status(500).json({ message: "Internal server error" });
+      console.log(error)
+      return res.status(400).json({"message":"Internal server error!!"});
+
     }
 }
+
+

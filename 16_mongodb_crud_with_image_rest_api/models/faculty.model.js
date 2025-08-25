@@ -1,64 +1,65 @@
-const mongoose = require("mongoose");
-const multer = require("multer");
-const path = require("path");
+const mongoose = require('mongoose');
+const multer = require('multer');
+const path = require('path');
 
-const imagePath = "uploads/faculties";
+const imgPath = "uploads/faculties";
 
-const FacultySchema = new mongoose.Schema({
-  name: {
-     type: String,
-      required: true 
-    },
+const facultySchema = new mongoose.Schema({
+  name: { 
+    type: String,
+     required: true
+     },
   email: {
-     type: String,
-      required: true
-  },
-  password: {
-     type: String,
-      required: true
-  },
-  phone: {
-     type: String,
-      required: true
-  },
+     type: String, 
+     required: true
+     },
+  password: { 
+    type: String,
+     required: true
+     },
+  phone: { 
+    type: String, 
+    required: true
+ },
   gender: {
      type: String,
       required: true
-  },
-  hobby: {
-     type: String,
-      required: true
-  },
+     },
+  hobby: { 
+    type: String,
+     required: true 
+    },
   description: {
      type: String,
-      required: true
-  },
+      required: true 
+    },
   image: {
      type: String,
-     required: false
-  },
+     required:false
+     },
   created_date: {
      type: Date,
-     default: Date.now
-  },
-  updated_date: {
-     type: Date,
-     default: Date.now
-  },
-});
+      default: Date.now 
+    },
+  updated_date: { 
+    type: Date,
+     default: Date.now 
+    },
+})
 
-// Multer storage config
-const imageStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "..", imagePath));
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null,path.join(__dirname,"..",imgPath) )
   },
-  filename: (req, file, cb) => {
+  filename: function (req, file, cb) {
     cb(null, file.originalname);
-  },
-});
+  }
+})
 
-FacultySchema.statics.uploadImage = multer({ storage: imageStorage }).single("image");
-FacultySchema.statics.facultyImagePath = imagePath;
+facultySchema.statics.uploadImage = multer({ storage: storage }).single("image");
+facultySchema.statics.imagePath = imgPath;
 
-const Faculty = mongoose.model("Faculty", FacultySchema);
+
+const Faculty = mongoose.model('Faculty',facultySchema);
+
 module.exports = Faculty;
