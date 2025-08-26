@@ -40,10 +40,11 @@ module.exports.addFaculty = async (req, res) => {
 
 module.exports.updateFaculty = async (req, res) => {
   try {
+  
     console.log("updated faculty controller!!");
     const id = req.params.id;
 
-    // Find existing faculty
+    // // Find existing faculty
     const faculty = await Faculty.findById(id);
     if (!faculty) {
       return res.status(404).json({ message: "Faculty not found" });
@@ -51,7 +52,7 @@ module.exports.updateFaculty = async (req, res) => {
 
     let updateData = req.body;
 
-    // If new image uploaded
+    // // If new image uploaded
     if (req.file) {
       // delete old image (if exists)
       if (faculty.image) {
@@ -61,14 +62,12 @@ module.exports.updateFaculty = async (req, res) => {
         }
       }
 
-      // save new image
+    //   // save new image
       updateData.image = Faculty.imagePath + "/" + req.file.filename;
     }
 
-    // update faculty
-    const updatedFaculty = await Faculty.findByIdAndUpdate(id, updateData, {
-      new: true,
-    });
+    // // update faculty
+    const updatedFaculty = await Faculty.findByIdAndUpdate(id, updateData);
 
     return res.status(200).json({
       message: "Faculty updated successfully",
