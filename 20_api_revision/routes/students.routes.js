@@ -7,4 +7,6 @@ console.log("router is connected successfuly!");
 
 router.get('/allstudents',Student.allstudents);
 router.post('/addstudents',Student.addstudents);
+router.put('/updateStudent/:_id',Student.updateStudent);
+router.delete('/deleteStudent/:_id',Student.deleteStudent);
 module.exports = router;
