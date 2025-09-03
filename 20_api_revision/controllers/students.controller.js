@@ -16,9 +16,11 @@ module.exports.allstudents = async(req,res)=>{
 
 module.exports.addstudents = async(req,res)=>{
     try{
-         
-         const newStudent = await StudentModel.create(req.body);
-         return res.status(200).json({message:"New student added",data:newStudent});
+        console.log(req.file);
+
+        let image = StudentModel.imgPath + req.file.filename;
+        const newStudent = await StudentModel.create({...req.body,image});
+        return res.status(200).json({message:"New student added",data:newStudent});
 
     }catch(err){
         console.log(err);
@@ -51,6 +53,7 @@ module.exports.deleteStudent = async(req,res)=>{
 
         return res.status(200).json({message:"Student deleted successfully!", data: deleteData});
 
+        
     }catch(error){
         console.log(error);
         return res.status(400).json({message:"Internal server error!"});
