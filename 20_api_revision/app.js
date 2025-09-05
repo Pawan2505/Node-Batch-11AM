@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('./config/authAdmin')
 const path = require('path')
 const db = require('./config/db')
 
@@ -9,7 +10,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.set('uploads',path.join(__dirname,'uploads'));
 
-app.use('/student', require('./routes/students.routes'));
+app.use('/student',auth, require('./routes/students.routes'));
 app.use('/users', require('./routes/users.routes'));
 
 app.listen(port,(err)=>{

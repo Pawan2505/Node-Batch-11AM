@@ -1,7 +1,9 @@
 const express = require('express');
 const Student = require('../controllers/students.controller')
+// const auth = require('../config/authAdmin');
 const StudentModel = require('../models/student.model')
 const router = express.Router();
+
 
 console.log("router is connected successfuly!");
 

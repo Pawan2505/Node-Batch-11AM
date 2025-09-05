@@ -36,7 +36,7 @@ module.exports.loginUser = async(req,res)=>{
         if(checkUser){
             if(await bcrypt.compare(req.body.password, checkUser.password)){
 
-                let token = jwt.sign({ userData: checkUser }, 'RNW', { expiresIn: '1h' });
+            let token = jwt.sign({ userData: checkUser }, 'RNW', { expiresIn: '30sec' });
 
             return res.status(200).json({ 
             message: 'Login successful', 
