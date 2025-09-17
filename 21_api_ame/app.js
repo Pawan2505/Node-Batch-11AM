@@ -1,10 +1,10 @@
 const express = require('express');
 const db = require('./config/db')
 const port = 8000;
-
+var cookieParser = require('cookie-parser')
 const app = express();
 app.use(express.urlencoded());
-
+app.use(cookieParser());
 app.use('/',require('./routes/index.routes'));
 
 app.listen(port,(err)=>{
