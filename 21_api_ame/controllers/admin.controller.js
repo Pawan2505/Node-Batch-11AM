@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-
+const ManagerModel = require('../models/manager.model');
 
 module.exports.adminRegister = async (req, res) => {
   try {
@@ -177,15 +177,84 @@ module.exports.verifyOTP = async(req,res)=>{
 
     if(!otp){
 
+      return res.status(200).json({message:"OTP not get"});
+
     }
 
     if(otp == req.cookies.otp){
 
+      return res.status(200).json({message:"Password changed!"});
     }
 
 
   }catch(error){
     console.log(error);
     return res.status(400).json({message:"Internal server error!"});
+  }
+}
+
+
+module.exports.managerRegister = async(req,res)=>{
+  try {
+    console.log(req.body);
+    console.log(req.file);
+    let checkManagerEmail = await ManagerModel.findOne({ email: req.body.email });
+
+    if (checkManagerEmail) {
+      return res.status(400).json({ error: "Email already exists" });
+    }else{
+      if(req.body.password == req.body.confirm_password){
+        console.log("Password matched ...");
+        let image = "";
+        if(req.file){
+          image = ManagerModel.managerImagePath + '/' + req.file.filename;
+        }
+        req.body.password = await bcrypt.hash(req.body.password, 10);
+        req.body.image = image;
+        req.body.status = "active";
+        req.body.created_date = moment().format("YYYY-MM-DD HH:mm:ss");
+        req.body.updated_date = moment().format("YYYY-MM-DD HH:mm:ss");
+
+        const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 587,
+          secure: false,
+          auth: {
+            user: "pawanaktu@gmail.com",
+            pass: "qqfduryhxngaohjt",
+          },
+        });
+
+        const info = await transporter.sendMail({
+          from: "pawanaktu@gmail.com",
+          to: req.body.email,
+          subject: "Manager Registration",
+          text: "You have been registered as a manager.",
+          html: "<b>You have been registered as a manager.</b> Your email is " + req.body.email,
+        });
+        if(info){
+          let managerDetails = await ManagerModel.create(req.body);
+          return res.status(201).json({ message: "Manager registered successfully", data: managerDetails });
+        }else{
+          return res.status(500).json({ error: "Failed to send registration email" });
+        }
+      }else{
+        return res.status(400).json({ error: "Passwords do not match" });
+
+      }
+    }
+  } catch (error) {
+    console.error("Error occurred during manager registration:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+module.exports.showAllManagers =  async(req,res)=>{
+   try{
+    const managers = await ManagerModel.find();
+   return res.status(200).json({ message: "All managers fetched successfully", data: managers });
+  }catch(error){
+    console.error("Error occurred while fetching all managers:", error);
+   return res.status(500).json({ error: "Internal server error" });
   }
 }

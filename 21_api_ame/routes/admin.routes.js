@@ -1,7 +1,7 @@
 const express = require('express');
 const Admin = require('../controllers/admin.controller');
 const AdminModel = require('../models/admin.model');
-
+const ManagerModel = require('../models/manager.model')
 const auth = require('../config/authAdmin');
 
 const router = express.Router();
@@ -16,4 +16,7 @@ router.post('/changePassword',auth,Admin.changePassword);
 router.post('/checkEmail', Admin.checkEmail);
 router.post('/verifyOTP' ,Admin.verifyOTP);
 
+// manager register
+router.post("/managerRegister",auth,ManagerModel.managerUpload, Admin.managerRegister);
+router.get("/showAllManagers", auth, Admin.showAllManagers);
 module.exports = router;
