@@ -309,48 +309,6 @@ module.exports.insertAdminData = async (req, res) => {
 
 ---
 
-
-Nice 👌 let’s extend the notes with **Step 5** in the same clean format.
-
----
-
-# 📒 Notes
-
-## Step 1 : **add\_admin.ejs**
-
-(Admin form with inputs, file upload, gender, hobby checkboxes, etc.)
-
----
-
-## Step 2 : **view\_admin.ejs**
-
-(Admin table view page — static/dynamic table structure)
-
----
-
-## Step 3 : **Routes**
-
-```js
-routes.get('/add_admin', adminCtl.add_admin);
-routes.get('/view_admin', adminCtl.view_admin);
-```
-
----
-
-## Step 4 : **Controller**
-
-```js
-module.exports.add_admin = (req, res) => {
-    return res.render('add_admin');
-}
-
-module.exports.view_admin = (req, res) => {
-    return res.render('view_admin');
-}
-```
-
----
-
 ## Step 5 : **Admin Model (Schema + Multer Setup)**
 
 ```js
