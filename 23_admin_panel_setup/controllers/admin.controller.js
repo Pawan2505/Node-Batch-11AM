@@ -1,11 +1,150 @@
 
-module.exports.dashboard = async(req,res)=>{
-    try{
+const AdminModel = require('../models/admin.model');
+const fs = require('fs');
+const path = require("path");
 
-        return res.render('dashboard');
 
-    }catch(err){
+module.exports.dashboard = async (req, res) => {
+  try {
+    return res.render('dashboard');
+  } catch (err) {
+    console.log("Error loading dashboard:", err.message);
+    return res.redirect("back");
+  }
+};
 
+
+module.exports.add_admin = async (req, res) => {
+  try {
+    return res.render('add_admin');
+  } catch (err) {
+    console.log("Error loading add_admin page:", err.message);
+    return res.redirect("back");
+  }
+};
+
+module.exports.view_admin = async (req, res) => {
+  try {
+    let alladmindetails = await AdminModel.find(); 
+    res.render("view_admin", { alladmindetails:alladmindetails });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error fetching admin details");
+  }
+};
+
+
+module.exports.insertData = async (req, res) => {
+  try {
+    req.body.name = req.body.fname + " " + req.body.lname;
+    req.body.avatar = "";
+
+    if (req.file) {
+      req.body.avatar = AdminModel.adminImagePath + "/" + req.file.filename;
     }
-}
+
+    let adminRecord = await AdminModel.create(req.body);
+
+    if (adminRecord) {
+      console.log("Admin Record Inserted");
+      return res.redirect("/add_admin");
+    } else {
+      console.log("Error in Inserting Admin Record!");
+      return res.redirect("back");
+    }
+  } catch (err) {
+    console.log("Error in Inserting Admin Record: ", err);
+    return res.redirect("back");
+  }
+};
+
+
+module.exports.editdetails = async (req, res) => {
+  try {
+    let id = req.params.id;
+    console.log(id);
+
+    let adminDetails = await AdminModel.findById(id);
+    console.log(adminDetails);
+
+    return res.render("edit_admin", { adminDetails });
+  } catch (error) {
+    console.log(error);
+    return res.redirect("/editdetails");
+  }
+};
+
+module.exports.update_admin = async (req, res) => {
+  try {
+    const _id = req.params._id;
+    let oldAdmin = await AdminModel.findById(_id);
+
+    if (!oldAdmin) {
+      console.log("Admin not found");
+      return res.redirect("back");
+    }
+
+    req.body.name = req.body.fname + " " + req.body.lname;
+
+
+    if (req.file) {
+      
+      let oldPath = path.join(__dirname, '..', oldAdmin.avatar);
+      try {
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+          console.log("Old image deleted");
+        }
+      } catch (err) {
+        console.log("Image delete error:", err.message);
+      }
+
     
+      req.body.avatar = AdminModel.adminImagePath + "/" + req.file.filename;
+    } else {
+     
+      req.body.avatar = oldAdmin.avatar;
+    }
+
+    await AdminModel.findByIdAndUpdate(_id, req.body);
+
+    console.log("Admin updated successfully");
+    return res.redirect("/view_admin");
+  } catch (error) {
+    console.log("Error updating admin:", error.message);
+    return res.redirect("back");
+  }
+};
+
+
+
+module.exports.deleteData = async (req, res) => {
+  try {
+    let id = req.params.id;
+    console.log("ID to delete:", id);
+
+    let adminData = await AdminModel.findById(id);
+
+    if (adminData) {
+
+      let imgPath = path.join(__dirname, "..", adminData.avatar);
+      console.log("Deleting file:", imgPath);
+
+      try {
+        fs.unlinkSync(imgPath);
+      } catch (err) {
+        console.log("Image delete failed or already removed:", err.message);
+      }
+
+      await AdminModel.findByIdAndDelete(id);
+      console.log("Admin deleted successfully");
+      return res.redirect("/view_admin");
+    } else {
+      console.log("Admin not found");
+      return res.redirect("back");
+    }
+  } catch (error) {
+    console.log("Error in deleting admin: ", error.message);
+    return res.redirect("back");
+  }
+};

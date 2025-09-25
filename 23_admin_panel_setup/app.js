@@ -7,8 +7,10 @@ const app = express();
 
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'views'));
-app.use('/assets',express.static(path.join(__dirname,'assets/')));
+app.use(express.static(path.join(__dirname,'assets')));
+app.use('/uploads',express.static(path.join(__dirname,'uploads/')));
 
+app.use(express.urlencoded({extended:true}));
 
 app.use('/',require('./routes/index'));
 
