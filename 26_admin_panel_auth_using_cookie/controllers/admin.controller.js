@@ -1,22 +1,49 @@
-
-const AdminModel = require('../models/admin.model');
-const fs = require('fs');
+const AdminModel = require("../models/admin.model");
+const fs = require("fs");
 const path = require("path");
 
+module.exports.SignIn = async (req, res) => {
+  try {
+    res.cookie('data',"Hello World");
+    return res.render("SignIn");
+  } catch (err) {}
+};
+
+module.exports.checkEmail = async (req, res) => {
+  try {
+   
+    // console.log(req.body);
+    const existAdmin = await AdminModel.findOne({email:req.body.email});
+
+    if(existAdmin){
+
+      if(req.body.password === existAdmin.password){
+        res.cookie('userId', existAdmin._id);
+        return res.redirect('/dashboard');
+      }
+
+    }else{
+      console.log("Please register!");
+    }
+
+  } catch (err) {
+    console.log(err.message);
+  }
+};
 
 module.exports.dashboard = async (req, res) => {
   try {
-    return res.render('dashboard');
+     res.clearCookie('data'); 
+    return res.render("dashboard");
   } catch (err) {
     console.log("Error loading dashboard:", err.message);
     return res.redirect("back");
   }
 };
 
-
 module.exports.add_admin = async (req, res) => {
   try {
-    return res.render('add_admin');
+    return res.render("add_admin");
   } catch (err) {
     console.log("Error loading add_admin page:", err.message);
     return res.redirect("back");
@@ -25,14 +52,13 @@ module.exports.add_admin = async (req, res) => {
 
 module.exports.view_admin = async (req, res) => {
   try {
-    let alladmindetails = await AdminModel.find(); 
-    res.render("view_admin", { alladmindetails:alladmindetails });
+    let alladmindetails = await AdminModel.find();
+    res.render("view_admin", { alladmindetails: alladmindetails });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error fetching admin details");
   }
 };
-
 
 module.exports.insertData = async (req, res) => {
   try {
@@ -57,7 +83,6 @@ module.exports.insertData = async (req, res) => {
     return res.redirect("back");
   }
 };
-
 
 module.exports.editdetails = async (req, res) => {
   try {
@@ -86,10 +111,8 @@ module.exports.update_admin = async (req, res) => {
 
     req.body.name = req.body.fname + " " + req.body.lname;
 
-
     if (req.file) {
-      
-      let oldPath = path.join(__dirname, '..', oldAdmin.avatar);
+      let oldPath = path.join(__dirname, "..", oldAdmin.avatar);
       try {
         if (fs.existsSync(oldPath)) {
           fs.unlinkSync(oldPath);
@@ -99,10 +122,8 @@ module.exports.update_admin = async (req, res) => {
         console.log("Image delete error:", err.message);
       }
 
-    
       req.body.avatar = AdminModel.adminImagePath + "/" + req.file.filename;
     } else {
-     
       req.body.avatar = oldAdmin.avatar;
     }
 
@@ -116,8 +137,6 @@ module.exports.update_admin = async (req, res) => {
   }
 };
 
-
-
 module.exports.deleteData = async (req, res) => {
   try {
     let id = req.params.id;
@@ -126,7 +145,6 @@ module.exports.deleteData = async (req, res) => {
     let adminData = await AdminModel.findById(id);
 
     if (adminData) {
-
       let imgPath = path.join(__dirname, "..", adminData.avatar);
       console.log("Deleting file:", imgPath);
 
