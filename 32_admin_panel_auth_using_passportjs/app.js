@@ -3,15 +3,31 @@ const db = require('./config/db');
 const port = 8000;
 const path = require('path');
 var cookieParser = require('cookie-parser')
-var session = require('express-session')
-// const passport = require('passport');
-// const passportAuth = require('./middleware/passportAuth');
-passportAuth(passport);
 const app = express();
 app.use(cookieParser())
-// app.use(session({
-//   secret: 'private-key'
-// }))
+
+// Passport js confi start
+
+
+const session = require('express-session');
+const passport = require('passport');
+const localStrategy = require('./middleware/passportAuth');
+
+app.use(session({
+    name: 'testing',
+    secret: 'mybatch',
+    resave: true,
+    saveUninitialized: false,
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.setAuthenticatedUser);
+
+// Passport js confi end
+
+
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'views'));
 app.use(express.static(path.join(__dirname,'assets')));

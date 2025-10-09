@@ -12,7 +12,7 @@ module.exports.SignIn = async (req, res) => {
 module.exports.checkEmail = async (req, res) => {
   try {
    
-    // console.log(req.body);
+    console.log(req.body);
     const existAdmin = await AdminModel.findOne({email:req.body.email});
 
     if(existAdmin){
@@ -33,21 +33,18 @@ module.exports.checkEmail = async (req, res) => {
 
 
 module.exports.logout = async(req,res)=>{
-  try{
-
-    res.clearCookie('userId');
-    return res.redirect('/');
-
-  }catch(err){
-    console.log(err.message);
-    return res.render('404',{err});
-  }
+  req.logout((err) => {
+    if (err) {
+      console.log("Logout error:", err.message);
+    }
+    return res.render("SignIn");
+  });
 }
 
 module.exports.changePassword = async(req,res)=>{
   try{
 
-    return res.render('changePassword');
+    return res.render('changePassword',{data:req.user});
 
   }catch(err){
     console.log(err.message);
@@ -82,7 +79,9 @@ module.exports.checkChangePassword = async(req,res)=>{
 
 module.exports.dashboard = async (req, res) => {
   try {
-    return res.render("dashboard",{data:req.cookies.userId});
+     return res.render("dashboard", {
+      data: req.user, // Pass the authenticated user to the view
+    });
   } catch (err) {
     console.log("Error loading dashboard:", err.message);
     return res.redirect("back");
@@ -102,7 +101,8 @@ module.exports.profile = async(req,res)=>{
 
 module.exports.add_admin = async (req, res) => {
   try {
-    return res.render("add_admin");
+    const userData = req.user; 
+    res.render('add_admin', { data: userData });
   } catch (err) {
     console.log("Error loading add_admin page:", err.message);
     return res.redirect("back");
@@ -111,8 +111,12 @@ module.exports.add_admin = async (req, res) => {
 
 module.exports.view_admin = async (req, res) => {
   try {
+     const userData = req.user; 
     let alladmindetails = await AdminModel.find();
-    res.render("view_admin", { alladmindetails: alladmindetails });
+    res.render("view_admin", {
+      alladmindetails: alladmindetails,
+      data: userData
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Error fetching admin details");
@@ -150,8 +154,8 @@ module.exports.editdetails = async (req, res) => {
 
     let adminDetails = await AdminModel.findById(id);
     console.log(adminDetails);
-
-    return res.render("edit_admin", { adminDetails });
+ const userData = req.user; 
+    return res.render("edit_admin", { adminDetails:adminDetails,data:userData });
   } catch (error) {
     console.log(error);
     return res.redirect("/editdetails");
