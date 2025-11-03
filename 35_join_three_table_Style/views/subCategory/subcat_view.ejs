@@ -1,0 +1,9 @@
+<%- include("../partials/header") %>
+<h2>All Sub Categories</h2>
+<a href="/subCategory/subcat_add">Add New</a>
+<ul>
+  <% subcategories.forEach(cat => { %>
+    <li><%= cat.name %></li>
+  <% }) %>
+</ul>
+<%- include("../partials/footer") %>

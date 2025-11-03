@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.2",
+    "nodemon": "^3.1.10"
+  },
+  "scripts": {
+    "start": "nodemon app.js"
+  }
+}

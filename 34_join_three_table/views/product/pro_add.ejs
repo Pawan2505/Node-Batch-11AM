@@ -1,0 +1,30 @@
+<%- include("../partials/header") %>
+
+<h2>Add New Product</h2>
+<form action="/product/pro_add" method="POST">
+  <label>Name:</label>
+  <input type="text" name="name" required><br><br>
+
+  <label>Price:</label>
+  <input type="number" name="price" required><br><br>
+
+  <label>Category:</label>
+  <select name="category" required>
+    <option value="">Select Category</option>
+    <% categories.forEach(c => { %>
+      <option value="<%= c._id %>"><%= c.name %></option>
+    <% }) %>
+  </select><br><br>
+
+  <label>Sub Category:</label>
+  <select name="subCategory" required>
+    <option value="">Select Sub Category</option>
+    <% subCategories.forEach(sc => { %>
+      <option value="<%= sc._id %>"><%= sc.name %></option>
+    <% }) %>
+  </select><br><br>
+
+  <button type="submit">Save Product</button>
+</form>
+
+<%- include("../partials/footer") %>

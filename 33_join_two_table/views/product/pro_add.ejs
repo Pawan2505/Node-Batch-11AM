@@ -1,0 +1,13 @@
+<%- include("../partials/header") %>
+<h2>Add Product</h2>
+<form action="/product/pro_add" method="post">
+  <input type="text" name="name" placeholder="Product Name" required>
+  <input type="number" name="price" placeholder="Price" required>
+  <select name="category">
+    <% categories.forEach(cat => { %>
+      <option value="<%= cat._id %>"><%= cat.name %></option>
+    <% }) %>
+  </select>
+  <button type="submit">Add</button>
+</form>
+<%- include("../partials/footer") %>

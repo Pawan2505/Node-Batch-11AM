@@ -1,0 +1,18 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+  <div class="card">
+    <h2>Add Category</h2>
+
+    <form action="/category/cat_add" method="post">
+      <div class="input-row">
+        <label for="name">Category Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter category name" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Category</button>
+    </form>
+  </div>
+</div>
+
+<%- include("../partials/footer") %>
