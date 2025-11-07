@@ -14,7 +14,7 @@ const passport = require('passport');
 const localStrategy = require('./middleware/passportAuth');
 
 app.use(session({
-    name: 'testing',
+    name: 'abc',
     secret: 'mybatch',
     resave: true,
     saveUninitialized: false,

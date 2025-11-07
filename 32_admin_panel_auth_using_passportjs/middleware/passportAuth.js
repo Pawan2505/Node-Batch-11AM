@@ -10,7 +10,10 @@ passport.use(new LocalStrategy({
         const adminRecord = await Admin.findOne({ email: email });
         if (!adminRecord) return done(null, false);
 
-        if (adminRecord.password === password) return done(null, adminRecord);
+        if (adminRecord.password === password){
+            return done(null, adminRecord);
+        }
+             
         return done(null, false);
     } catch (err) {
         return done(err);
@@ -41,7 +44,7 @@ passport.checkauthentication = (req, res, next) => {
 // Set authenticated user in session
 passport.setAuthenticatedUser = (req, res, next) => {
     if (req.session){
-       req.session.user = req.user;
+       req.session.user = req.adminbvcv;
     }
     next();
 };

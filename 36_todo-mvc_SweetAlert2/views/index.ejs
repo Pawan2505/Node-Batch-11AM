@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 To-Do List</h1>
+
+    <form action="/add" method="POST">
+      <input type="text" name="task" placeholder="Enter task..." required />
+      <button type="submit">Add</button>
+    </form>
+
+    <ul>
+      <% todos.forEach(todo => { %>
+        <li>
+          <span><%= todo.task %></span>
+          <form action="/delete/<%= todo._id %>" method="POST" style="display:inline;">
+            <button type="submit" class="delete-btn">❌</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+
+  <script src="/js/alert.js"></script>
+
+ 
+</body>
+</html>

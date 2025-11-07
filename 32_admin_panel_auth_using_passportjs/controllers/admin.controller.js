@@ -4,7 +4,6 @@ const path = require("path");
 
 module.exports.SignIn = async (req, res) => {
   try {
-    res.cookie('data',"Hello World");
     return res.render("SignIn");
   } catch (err) {}
 };
@@ -18,7 +17,7 @@ module.exports.checkEmail = async (req, res) => {
     if(existAdmin){
 
       if(req.body.password === existAdmin.password){
-        res.cookie('userId', existAdmin);
+       
         return res.redirect('/dashboard');
       }
 
@@ -78,6 +77,7 @@ module.exports.checkChangePassword = async(req,res)=>{
 }
 
 module.exports.dashboard = async (req, res) => {
+  console.log(req.user);
   try {
      return res.render("dashboard", {
       data: req.user, // Pass the authenticated user to the view

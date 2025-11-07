@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "connect-mongo": "^5.1.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "mongoose": "^8.19.1",
+    "nodemon": "^3.1.10",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  },
+  "scripts": {
+    "start": "nodemon app.js"
+  }
+}

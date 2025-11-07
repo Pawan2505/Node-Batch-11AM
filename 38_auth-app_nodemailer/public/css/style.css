@@ -1,0 +1,261 @@
+/* public/css/style.css
+   Clean, minimal styles for auth pages + todo list + flash messages
+*/
+
+/* ----------------------
+   Reset & base
+   ---------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --bg: #f6f8fa;
+  --card: #ffffff;
+  --primary: #2563eb; /* blue-600 */
+  --primary-600: #1e40af; /* blue-800 */
+  --muted: #6b7280;
+  --success-bg: #d1fae5;
+  --success-text: #065f46;
+  --error-bg: #fee2e2;
+  --error-text: #991b1b;
+  --glass: rgba(255,255,255,0.6);
+  --radius: 10px;
+  --shadow: 0 6px 20px rgba(16,24,40,0.08);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-size: 16px;
+}
+
+html, body {
+  height: 100%;
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  color: #111827;
+}
+
+/* ----------------------
+   Container / Card
+   ---------------------- */
+.container {
+  max-width: 880px;
+  margin: 48px auto;
+  padding: 28px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Layout helper for auth pages */
+.auth-wrap {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Left panel (app intro / todo) */
+.card-left {
+  padding: 20px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(37,99,235,0.06), rgba(37,99,235,0.02));
+}
+
+/* Right card (forms) */
+.card-form {
+  padding: 24px;
+  background: var(--card);
+  border-radius: 8px;
+  border: 1px solid rgba(15,23,42,0.04);
+}
+
+/* Headings */
+h1 {
+  font-size: 28px;
+  margin-bottom: 14px;
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #0f172a;
+}
+
+/* ----------------------
+   Forms
+   ---------------------- */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+button,
+textarea {
+  font-family: inherit;
+  font-size: 15px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(15,23,42,0.08);
+  border-radius: 8px;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+  background: #fff;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 6px 18px rgba(37,99,235,0.08);
+}
+
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform .06s ease, background .12s ease;
+}
+
+/* Primary button */
+.btn-primary {
+  background: linear-gradient(90deg, var(--primary), var(--primary-600));
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(37,99,235,0.18);
+}
+
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+/* Secondary / ghost */
+.btn-ghost {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid rgba(37,99,235,0.12);
+}
+
+/* Small textual actions */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ----------------------
+   Flash messages
+   ---------------------- */
+.alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.alert.success {
+  background: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid rgba(6,95,70,0.12);
+}
+
+.alert.error {
+  background: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid rgba(153,27,27,0.08);
+}
+
+/* ----------------------
+   Todo list styles
+   ---------------------- */
+ul {
+  list-style: none;
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg,#fff,#fbfdff);
+  border-radius: 8px;
+  border: 1px solid rgba(15,23,42,0.04);
+  box-shadow: 0 6px 14px rgba(2,6,23,0.02);
+}
+
+li span {
+  font-size: 15px;
+  color: #0f172a;
+  overflow-wrap: anywhere;
+}
+
+/* Delete button */
+.delete-btn {
+  background: transparent;
+  border: 1px solid rgba(220,38,38,0.08);
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: transform .06s ease;
+}
+
+.delete-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(220,38,38,0.18);
+}
+
+/* Add form inline layout */
+form[method="POST"] input[name="task"] {
+  width: calc(100% - 100px);
+  display: inline-block;
+}
+
+form[method="POST"] button[type="submit"] {
+  width: 84px;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+/* ----------------------
+   Utilities
+   ---------------------- */
+.text-center { text-align: center; }
+.small { font-size: 13px; color: var(--muted); }
+.mt-6 { margin-top: 1.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+
+/* ----------------------
+   Responsive
+   ---------------------- */
+@media (max-width: 900px) {
+  .auth-wrap { grid-template-columns: 1fr; }
+  .container { margin: 20px; padding: 18px; }
+  form[method="POST"] input[name="task"] { width: 100%; }
+  form[method="POST"] button[type="submit"] { width: 100%; margin-left: 0; margin-top: 8px; }
+}
+
+/* ----------------------
+   Tiny helpers (links)
+   ---------------------- */
+a {
+  color: var(--primary-600);
+  text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📝 To-Do List</h1>
+
+    <!-- Flash Message Section -->
+    <% if (message && message.length > 0) { %>
+      <div class="alert success">
+        <%= message %>
+      </div>
+    <% } %>
+
+    <!-- Add Todo Form -->
+    <form action="/add" method="POST">
+      <input type="text" name="task" placeholder="Enter task..." required />
+      <button type="submit">Add</button>
+    </form>
+
+    <!-- Todo List -->
+    <ul>
+      <% todos.forEach(todo => { %>
+        <li>
+          <span><%= todo.task %></span>
+          <form action="/delete/<%= todo._id %>" method="POST" style="display:inline;">
+            <button type="submit" class="delete-btn">❌</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</body>
+</html>
